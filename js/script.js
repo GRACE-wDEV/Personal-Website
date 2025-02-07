@@ -90,3 +90,29 @@ const nav = document.querySelector('.nav'),
                 allSection[i].classList.toggle('open');
             }
         }
+// Storing user data in form efficiently
+const formFields = ['user-name', 'user-email', 'subject', 'user-message'];
+
+formFields.forEach(field => {
+  const element = document.getElementById(field);
+  const localStorageKey = field.replace('user-', 'user').replace('-', '');
+  element.value = localStorage.getItem(localStorageKey) || '';
+  element.onkeyup = () => {
+    localStorage.setItem(localStorageKey, element.value);
+  };
+});
+
+// Clear Form Data After Clicking the submit button and collect data
+let submit = document.querySelector(".contact .contact-form .btn");
+
+submit.onclick = function() {
+  let formData = {};
+  formFields.forEach(field => {
+    const element = document.getElementById(field);
+    const localStorageKey = field.replace('user-', 'user').replace('-', '');
+    formData[localStorageKey] = element.value;
+    element.value = '';
+    localStorage.removeItem(localStorageKey);
+  });
+  console.log(formData); // You can send this data to your server here
+};
